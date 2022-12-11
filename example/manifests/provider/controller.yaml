@@ -1,0 +1,13 @@
+apiVersion: pkg.crossplane.io/v1alpha1
+kind: ControllerConfig
+metadata:
+  name: terraform-config
+  namespace: crossplane-system
+  labels:
+    app: crossplane-provider-terraform
+spec:
+  image: crossplane/provider-terraform-controller:v0.2.0
+  args:
+    - "--debug"
+  podSecurityContext:
+    fsGroup: 2000

@@ -1,0 +1,5 @@
+brew "tfenv"
+brew "go"
+brew "helmfile"
+brew "kubectx"
+brew "kustomize"

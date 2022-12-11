@@ -11,10 +11,45 @@ Terraform modules, CloudFormation, Pulumi, etc.
 On the other hand, there are likely folks whose bread and butter is writing infrastructure centric
 code. It is far more efficient to have these individuals focused on writing composable pieces that
 provision resources in scalable, efficient, and best practice following ways, and then finding a
-method by which the individuals and teams writing applications can easily use these tools to ensure that the cloud resources they require are available.
+method by which the individuals and teams writing applications can easily use these tools to ensure
+that the cloud resources they require are available.
 
-`adam` is a project that seeks to bridge this gap by providing an easy interface for application developers to tell the platform what resources they require, in a method which they are likely at least somewhat familiar with, while using composable parts built by specialized cloud engineers behind the scenes. It is named after the 18th century Scottish philosopher and economist [Adam Smith](https://en.wikipedia.org/wiki/Adam_Smith), who is credited as one of the founders of the concept of [the division of labor](https://en.wikipedia.org/wiki/Division_of_labour), upon which the previous two paragraphs are based.
+`adam` is a project that seeks to bridge this gap by providing an easy interface for application
+developers to tell the platform what resources they require, in a method which they are likely at
+least somewhat familiar with, while using composable parts built by specialized cloud engineers
+behind the scenes. It is named after the 18th century Scottish philosopher and economist [Adam
+Smith](https://en.wikipedia.org/wiki/Adam_Smith), who is credited as one of the founders of the
+concept of [the division of labor](https://en.wikipedia.org/wiki/Division_of_labour), upon which the
+previous two paragraphs are based.
 
 ## Approach
 
-If you are the maintainer of a service that is deployed in Kuberentes, chances are that you are at least somewhat familiar with the concept of [annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/). `adam` allows you to use annotations on your existing `Deployment` resources to indicate what kinds of cloud infrastructure you need, and then translate that into use of components provided by an infrastructure or platform engineering team.`
+If you are the maintainer of a service that is deployed in Kuberentes, chances are that you are at
+least somewhat familiar with the concept of
+[annotations](https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/).
+`adam` allows you to use annotations on your existing `Deployment` resources to indicate what kinds
+of cloud infrastructure you need, and then translate that into use of components provided by an
+infrastructure or platform engineering team.`
+
+## Technologies Uses
+
+`adam` seeks to use as many existing technologies as possible. This list currently includes:
+
+- [Terraform](https://terraform.io) for defining infrastructure deployments.
+- [Crossplane](https://crossplane.io) and the [Crossplane Terraform
+  provider](https://github.com/upbound/provider-terraform) for orchestrating deployments.
+
+## Principles
+
+### Self Service
+
+`adam` seeks to be as self-service and self-maintaining as possible. A good example of this
+principle is in how we seek to onboard services to the platform. The current thought around the
+workflow looks something like this:
+
+1. As part of deploying a new service in Kubernetes, a namespace is created. If that namespace has
+   certain annotations attached, `adam` will do the following:
+
+   - Create a new [IAM Role for Service Account](https://docs.aws.amazon.com/eks/latest/userguide/iam-roles-for-service-accounts.html) that has the permissions specified as part of `adam`'s setup
+   (this will be done using `adam`'s own CRs).
+   - Create a new Crossplane 
