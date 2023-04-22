@@ -1,0 +1,12 @@
+apiVersion: adam.k8s.yardbirdsax.github.io/v1alpha1
+kind: Module
+metadata:
+  labels:
+    app.kubernetes.io/name: module
+    app.kubernetes.io/instance: module-sample
+    app.kubernetes.io/part-of: adam-controller-manager
+    app.kubernetes.io/managed-by: kustomize
+    app.kubernetes.io/created-by: adam-controller-manager
+  name: module-sample
+spec:
+  # TODO(user): Add fields here
